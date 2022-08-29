@@ -3,26 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Constants\ErrorCode;
+use App\Constants\StoragePath;
 use App\Http\Requests\Post\IndexPostsRequest;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
+use App\Interfaces\PostRepositoryInterface;
 use App\Models\Post;
 use App\Models\Service;
-use App\Repositories\PostRepository;
 use App\Services\JsonResponse;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 
 class PostController extends Controller
 {
-    private string $thumbnailStorage;
-    private string $imageStorage;
-
-    public function __construct(JsonResponse $response, private PostRepository $repository)
+    public function __construct(JsonResponse $response, private PostRepositoryInterface $repository)
     {
         parent::__construct($response);
-
-        $this->thumbnailStorage = 'public/storage/posts/thumbnails';
-        $this->imageStorage = 'public/storage/posts/images';
     }
 
     public function index(Service $service, IndexPostsRequest $request): HttpJsonResponse
@@ -39,11 +34,11 @@ class PostController extends Controller
     {
         if (($post = $this->repository->store($service, $request->title, $request->summary, $request->body))) {
             $response = [];
-            $uploadResult = (new FileUploaderController($this->thumbnailStorage))->uploadImage($post, $request, 'thumbnail', 'thumbnail');
+            $uploadResult = (new FileUploaderController(StoragePath::POST_THUMBNAIL))->uploadImage($post, $request, 'thumbnail', 'thumbnail');
             $response['uploadedThumbnail'] = $uploadResult['uploaded'];
             $response['uploadedThumbnailText'] = $uploadResult['uploadedText'];
 
-            $uploadResult = (new FileUploaderController($this->imageStorage))->uploadImage($post, $request, 'image', 'image');
+            $uploadResult = (new FileUploaderController(StoragePath::POST_IMAGE))->uploadImage($post, $request, 'image', 'image');
             $response['uploadedImage'] = $uploadResult['uploaded'];
             $response['uploadedImageText'] = $uploadResult['uploadedText'];
 
@@ -56,11 +51,11 @@ class PostController extends Controller
     public function update(Post $post, UpdatePostRequest $request): HttpJsonResponse
     {
         if ($this->repository->update($post, $request->title, $request->summary, $request->body)) {
-            $uploadResult = (new FileUploaderController($this->thumbnailStorage))->uploadImage($post, $request, 'thumbnail', 'thumbnail');
+            $uploadResult = (new FileUploaderController(StoragePath::POST_THUMBNAIL))->uploadImage($post, $request, 'thumbnail', 'thumbnail');
             $response['uploadedThumbnail'] = $uploadResult['uploaded'];
             $response['uploadedThumbnailText'] = $uploadResult['uploadedText'];
 
-            $uploadResult = (new FileUploaderController($this->imageStorage))->uploadImage($post, $request, 'image', 'image');
+            $uploadResult = (new FileUploaderController(StoragePath::POST_IMAGE))->uploadImage($post, $request, 'image', 'image');
             $response['uploadedImage'] = $uploadResult['uploaded'];
             $response['uploadedImageText'] = $uploadResult['uploadedText'];
 

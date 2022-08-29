@@ -7,14 +7,14 @@ use App\Http\Requests\Position\IndexPositionRequest;
 use App\Http\Requests\Position\SetParentPositionRequest;
 use App\Http\Requests\Position\StorePositionRequest;
 use App\Http\Requests\Position\UpdatePositionRequest;
+use App\Interfaces\PositionRepositoryInterface;
 use App\Models\Position;
-use App\Repositories\PositionRepository;
 use App\Services\JsonResponse;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 
 class PositionController extends Controller
 {
-    public function __construct(JsonResponse $response, private PositionRepository $repository)
+    public function __construct(JsonResponse $response, private PositionRepositoryInterface $repository)
     {
         parent::__construct($response);
     }

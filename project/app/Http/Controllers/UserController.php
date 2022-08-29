@@ -7,18 +7,16 @@ use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\IndexUsersRequest;
 use App\Http\Requests\User\LoginUserRequest as LoginRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
-use App\Repositories\UserRepository;
 use App\Services\JsonResponse;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 
 class UserController extends Controller
 {
-    public function __construct(JsonResponse $response, private UserRepository $repository)
+    public function __construct(JsonResponse $response, private UserRepositoryInterface $repository)
     {
         parent::__construct($response);
-
-        $this->imageStorage = 'public/storage/services/images';
     }
 
     public function index(IndexUsersRequest $request): HttpJsonResponse

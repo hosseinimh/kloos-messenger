@@ -1,4 +1,5 @@
-# Admin panel for registering no-birth-certificate students as well as their parents or relatives
+
+# Kloos messenger panel is an admin panel website for CRUD operations on users, user types and messages used for Kloos messenger app
 
 ## Brief
 
@@ -10,24 +11,25 @@ To register no-birth-certificate students in schools, they must have an official
 
 There are two main directories in the root: `project` and `public_html`.
 
-All logics and Laravel core files are in `project` directory. `public_html` is responsible for representing the website, and all asset files such as images, js files and css are in it.
+All logics and Laravel core files are in `project` directory. `public_html` is responsible for representing the website, and all asset files such as images, JS files and CSS are in it.
 
-I created two files in the `project` directory which specify the environment and paths to main directories:
-`server-config.json`, `server-config.php`. If you deploy the project on a subdomain, you can simply change the public_path in both files and we are all set.
+I created two files in the `project` directory which specify the paths to main directories:
+`server-config.json`, `server-config.php`. E.g. If you deploy the project on a subdomain, you can simply change the `public_path` in both files and we are all set.
 
 ### server-config.json
 
 ```bash
 {
-    "relativePublicPath": "./../public_html",
-    "appEnv": "local" // or "production"
+	"relativePublicPath": "./../public_html",
+	"baseUrl": "http://127.0.0.1:8000"
 }
 ```
 
 ### server-config.php
 
 ```bash
-define('PUBLIC_PATH', __DIR__ . '/../public_html');
+define('BASE_URL', __DIR__  .  'http://127.0.0.1:8000');
+define('PUBLIC_PATH', __DIR__  .  '/../public_html');
 define('FRAMEWORK_PATH', __DIR__);
 ```
 
@@ -39,7 +41,7 @@ Also, you have to set the database connection parameters in `.env`:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=non_certificates_db
+DB_DATABASE=kloos_db
 DB_USERNAME=root
 DB_PASSWORD=123456
 ```
